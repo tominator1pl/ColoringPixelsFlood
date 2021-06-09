@@ -39,10 +39,10 @@ namespace ColoringPixelsFlood
         public static Bitmap bmp;
 
         public static int spaces = 18;
-        public static int gridX = 105;
-        public static int gridY = 51;
-        public static int colours = 43;
-        public static int minColors = 18;
+        public static int gridX = 100;
+        public static int gridY = 50;
+        public static int colours = 99;
+        public static int minColors = 1;
         public static int n = minColors;
 
 
@@ -85,7 +85,7 @@ namespace ColoringPixelsFlood
                 }
                 Thread.Sleep(100);
                 Form1.takeScreenShot(Form1.pics);
-                if (bmp.GetPixel(1900, 920) == Color.FromArgb(255, 117, 118)) continue;
+                if (bmp.GetPixel(1900, 920) == Color.FromArgb(255, 117, 118)) continue; 
                 Thread.Sleep(100);
                 Form1.takeScreenShot(Form1.pics);
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
@@ -149,8 +149,14 @@ namespace ColoringPixelsFlood
             Color someColor = bmp.GetPixel(posX, posY);
             for (int i = 0; i < 10; i++) //spaces*Math.Sqrt(spaces) - spaces*0.5
             {
-                if (someColor.ToArgb() != bmp.GetPixel(posX + i, posY + i).ToArgb())
-                    return false;
+                try
+                {
+                    if (someColor.ToArgb() != bmp.GetPixel(posX + i, posY + i).ToArgb())
+                        return false;
+                }catch (Exception)
+                {
+                    return true;
+                }
             }
             return true;
         }

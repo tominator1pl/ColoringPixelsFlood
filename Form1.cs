@@ -33,7 +33,6 @@ namespace ColoringPixelsFlood
             HotKeyManager.RegisterHotKey(Keys.NumPad2, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad3, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad4, KeyModifiers.Alt);
-            HotKeyManager.RegisterHotKey(Keys.NumPad5, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
 
 
@@ -56,25 +55,26 @@ namespace ColoringPixelsFlood
             {
                 takeScreenShot(Form1.pics);
                 Painter.n = Painter.minColors;
-            }
-            if (e.Key == Keys.NumPad2)
-            {
                 getMouse(this);
                 Painter.minX = Painter.mouseX;
                 Painter.minY = Painter.mouseY;
                 Painter.maxX = Painter.mouseX + (Painter.spaces * Painter.gridX);
                 Painter.maxY = Painter.mouseY + (Painter.spaces * Painter.gridY);
+                thread = new Thread(new ThreadStart(MyThread));
+                thread.Start();
+            }
+            if (e.Key == Keys.NumPad2)
+            {
+                thread.Abort();
             }
             if (e.Key == Keys.NumPad3)
             {
+                Cursor.Position = new Point(Painter.minX, Painter.minY);
+                Thread.Sleep(100);
                 thread = new Thread(new ThreadStart(MyThread));
                 thread.Start();
             }
             if (e.Key == Keys.NumPad4)
-            {
-                thread.Abort();
-            }
-            if (e.Key == Keys.NumPad5)
             {
                 thread.Abort();
                 Painter.n = Painter.n + 1;
@@ -120,24 +120,24 @@ namespace ColoringPixelsFlood
             
         }
 
-        private void textBoxGridX_TextChanged(object sender, EventArgs e)
+        private void numericX_ValueChanged(object sender, EventArgs e)
         {
-            Painter.gridX = Int32.Parse(textBoxGridX.Text);
+            Painter.gridX = (int)numericX.Value;
         }
 
-        private void textBoxGridY_TextChanged(object sender, EventArgs e)
+        private void numericY_ValueChanged(object sender, EventArgs e)
         {
-            Painter.gridY = Int32.Parse(textBoxGridY.Text);
+            Painter.gridY = (int)numericY.Value;
         }
 
-        private void textBoxColors_TextChanged(object sender, EventArgs e)
+        private void numericColors_ValueChanged(object sender, EventArgs e)
         {
-            Painter.colours = Int32.Parse(textBoxColors.Text);
+            Painter.colours = (int)numericColors.Value;
         }
 
-        private void textBoxMinColor_TextChanged(object sender, EventArgs e)
+        private void numericMinColors_ValueChanged(object sender, EventArgs e)
         {
-            Painter.minColors = Int32.Parse(textBoxMinColor.Text);
+            Painter.minColors = (int)numericMinColors.Value;
             Painter.n = Painter.minColors;
         }
     }
