@@ -1,5 +1,4 @@
-﻿using ScreenShotDemo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,8 +10,8 @@ namespace ColoringPixelsFlood
     class Screener
     {
         private static ScreenCapture sc = new ScreenCapture();
-
-        public static Image getScreen()
+        
+        public static Image GetScreen()
         {
             return sc.CaptureScreen();
         }

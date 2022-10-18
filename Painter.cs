@@ -15,58 +15,47 @@ namespace ColoringPixelsFlood
     {
         [DllImport("user32.dll")]
         public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
-
+        
         public const int MOUSEEVENTF_MOVE = 0x01;
         public const int MOUSEEVENTF_LEFTDOWN = 0x02;
         public const int MOUSEEVENTF_LEFTUP = 0x04;
         public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         public const int MOUSEEVENTF_RIGHTUP = 0x10;
 
-        private Form1 form1;
+        private int turboSpeed = 100000; //speed is after each square
+        private int turboSlowdown = 500000; //slowdown is after break eg. skipping full squares, new line etc.
+        private int slowSpeed = 6; //turbo is used when checked without VSync (super fast)
+        private int slowSlowdown = 25; //slow is with VSync
 
+        private static Form1 form1;
+        public static float minX = 0;
+        public static float maxX = 0;
+        public static float minY = 0;
+        public static float maxY = 0;
+        public static Bitmap bmp;
+
+        public static float spaces = 15;
+        public static int gridX = 1;
+        public static int gridY = 1;
+        public static int colours = 99;
+        public static int minColors = 1;
+        public static int n;
+
+        public static PointF mousePrivate;
         public Painter(Form1 form)
         {
             form1 = form;
+            n = minColors;
+            mousePrivate = form.GetMouse();
         }
 
-
-        public static int mouseX = 0;
-        public static int mouseY = 0;
-        public static int minX = 0;
-        public static int maxX = 0;
-        public static int minY = 0;
-        public static int maxY = 0;
-        public static Bitmap bmp;
-
-        public static int spaces = 18;
-        public static int gridX = 100;
-        public static int gridY = 50;
-        public static int colours = 99;
-        public static int minColors = 1;
-        public static int n = minColors;
-
-
-        public void paint()
+        public void Paint()
         {
-            Form1.getMouse(form1);
-            int startX = (((int)((mouseX - minX) / spaces)) * spaces) + minX;
-            int startY = (((int)((mouseY - minY) / spaces)) * spaces) + minY;
-            Cursor.Position = new Point(startX, startY);
-            
-            /*while (!checkFull(mouseX, mouseY))
-            { 
-                click();
-                if (mouseX + 36 > maxX)
-                {
-                    break;
-                }
-                else
-                {
-                    move(36, 0);
-                    
-                }
-                
-            }*/
+            //Point mousePos = form1.GetMouse();
+            float startX = minX + spaces / 2;
+            float startY = minY + spaces / 2;
+            mousePrivate = new PointF(startX, startY);
+            Cursor.Position = new Point((int)mousePrivate.X, (int)mousePrivate.Y);
             for (; n <= colours; n++)
             {
 
@@ -84,19 +73,18 @@ namespace ColoringPixelsFlood
                     SendKeys.SendWait((n % 10).ToString());
                 }
                 Thread.Sleep(100);
-                Form1.takeScreenShot(Form1.pics);
+                form1.TakeScreenShot();
                 if (bmp.GetPixel(1900, 920) == Color.FromArgb(255, 117, 118)) continue; 
-                Thread.Sleep(100);
-                Form1.takeScreenShot(Form1.pics);
+                //Thread.Sleep(200);
+                form1.TakeScreenShot();
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
                 bool fuller = false;
                 for (int i = 0; i <= gridY; i++)
                 {
                     for (int j = 0; j <= gridX; j++)
                     {
-
-                        //if (!checkFull(mouseX, mouseY)) click();
-                        if (checkFull(mouseX, mouseY))
+                        //mousePos = form1.GetMouse();
+                        if (CheckFull(mousePrivate.X, mousePrivate.Y))
                         {
                             fuller = false;
                         }
@@ -104,77 +92,108 @@ namespace ColoringPixelsFlood
                         {
                             if (fuller)
                             {
-                                Thread.Sleep(6);
+                                Sleep(false);
                             }
                             else
                             {
-                                Thread.Sleep(20);
+                                Sleep(true);
                                 fuller = true;
                             }
                         }
 
-                        move(spaces, 0);
+                        //Move(spaces, 0);
+                        mousePrivate = new PointF(mousePrivate.X + spaces, mousePrivate.Y);
+                        Cursor.Position = new Point((int)mousePrivate.X, (int)mousePrivate.Y);
                         if (fuller)
                         {
-                            if (checkFull(mouseX, mouseY))
+                            //mousePos = form1.GetMouse();
+                            if (CheckFull(mousePrivate.X, mousePrivate.Y))
                             {
-                                Thread.Sleep(25);
+                                Sleep(true);
                             }
                         }
                     }
                     if (fuller)
-                        Thread.Sleep(30);
-                    Cursor.Position = new Point(minX, mouseY);
-                    move(0, spaces);
+                        Sleep(true);
+                    //mousePos = form1.GetMouse();
+                    mousePrivate = new PointF(startX, mousePrivate.Y);
+                    Cursor.Position = new Point((int)mousePrivate.X, (int)mousePrivate.Y);
+                    //Move(0, spaces);
+                    mousePrivate = new PointF(mousePrivate.X, mousePrivate.Y + spaces);
+                    Cursor.Position = new Point((int)mousePrivate.X, (int)mousePrivate.Y);
                     if (fuller)
-                        Thread.Sleep(30);
-                    if (!checkFull(mouseX, mouseY))
+                        Sleep(true);
+                    //mousePos = form1.GetMouse();
+                    if (!CheckFull(mousePrivate.X, mousePrivate.Y))
                     {
-                        Thread.Sleep(30);
+                        Sleep(true);
                     }
                     fuller = true;
                 }
                 mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                Thread.Sleep(100);
-                Form1.takeScreenShot(Form1.pics);
-                Cursor.Position = new Point(minX, minY);
+                //Thread.Sleep(100);
+                //form1.TakeScreenShot();
+                mousePrivate = new PointF(startX, startY);
+                Cursor.Position = new Point((int)mousePrivate.X, (int)mousePrivate.Y);
             }
             Thread.CurrentThread.Abort();
         }
 
        
-
-        private bool checkFull(int posX, int posY)
+        
+        private bool CheckFull(float posX, float posY)
         {
-            Color someColor = bmp.GetPixel(posX, posY);
-            for (int i = 0; i < 10; i++) //spaces*Math.Sqrt(spaces) - spaces*0.5
+            posX = (posX - spaces / 2) + 1;
+            posY = (posY - spaces / 2) + 1;
+            float diag = spaces - 2;
+            float endX = posX + diag;
+            float endY = posY + diag;
+            Color someColor = bmp.GetPixel((int)posX, (int)posY);
+            for (float x = posX; x < endX; x++)
             {
-                try
+                for(float y = posY; y < endY; y++)
                 {
-                    if (someColor.ToArgb() != bmp.GetPixel(posX + i, posY + i).ToArgb())
-                        return false;
-                }catch (Exception)
-                {
-                    return true;
+                    try
+                    {
+                        if (someColor.ToArgb() != bmp.GetPixel((int)x, (int)y).ToArgb())
+                            return false;
+                    }
+                    catch (Exception)
+                    {
+                        return true;
+                    }
                 }
             }
             return true;
         }
 
-        private void click()
+        /// <summary>
+        /// Sleep for some time
+        /// </summary>
+        /// <param name="slow">if its the one after a break</param>
+        private void Sleep(bool slow)
         {
-            Thread.Sleep(20);
-            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-            Thread.Sleep(25);
-            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-            Thread.Sleep(5);
+            int turboTicks;
+            int slowTicks;
+            if (slow)
+            {
+                turboTicks = turboSlowdown;
+                slowTicks = slowSlowdown;
+            }
+            else
+            {
+                turboTicks = turboSpeed;
+                slowTicks = slowSpeed;
+            }
 
-        }
-
-        private void move(int x, int y)
-        {
-            mouse_event(MOUSEEVENTF_MOVE, x, y, 0, 0);
-            Form1.getMouse(form1);
+            if (Form1.stTurboCheckBox.Checked)
+            {
+                Thread.SpinWait(turboTicks);
+            }
+            else
+            {
+                Thread.Sleep(slowTicks);
+            }
         }
     }
 }

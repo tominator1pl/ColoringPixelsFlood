@@ -15,109 +15,145 @@ namespace ColoringPixelsFlood
     public partial class Form1 : Form
     {
 
-        public static Label lab1;
-        public static Label lab2;
-        public static PictureBox pics;
-        public static PictureBox pics2;
+        public Label lab1;
+        public PictureBox pics;
+        public static PictureBox stPic;
+        public static Label stGuideLabel;
+        public static CheckBox stTurboCheckBox;
+        public bool afterGuide;
+        private int guideStep;
         Thread thread;
+        Painter painter;
+        Guide guide;
 
         public Form1()
         {
             InitializeComponent();
-            lab1 = label1;
-            lab2 = label2;
-            pics2 = pictureBox2;
+            lab1 = guideLabel;
+            stGuideLabel = guideLabel;
+            stTurboCheckBox = turboCheckBox;
             pics = pictureBox1;
-            
+            stPic = pictureBox1;
+            painter = new Painter(this);
+            guideStep = 0;
+            afterGuide = false;
+
             HotKeyManager.RegisterHotKey(Keys.NumPad1, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad2, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad3, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad4, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(Keys.NumPad5, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
 
 
         }
 
-        public void MyThread()
-        {
-            Painter painter = new Painter(this);
-            painter.paint();
-        }
-
-        public void UpdateMousePosition()
-        {
-
-        }
-
         private void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
         {
-            if (e.Key == Keys.NumPad1)
+            switch (e.Key)
             {
-                takeScreenShot(Form1.pics);
-                Painter.n = Painter.minColors;
-                getMouse(this);
-                Painter.minX = Painter.mouseX;
-                Painter.minY = Painter.mouseY;
-                Painter.maxX = Painter.mouseX + (Painter.spaces * Painter.gridX);
-                Painter.maxY = Painter.mouseY + (Painter.spaces * Painter.gridY);
-                thread = new Thread(new ThreadStart(MyThread));
-                thread.Start();
-            }
-            if (e.Key == Keys.NumPad2)
-            {
-                thread.Abort();
-            }
-            if (e.Key == Keys.NumPad3)
-            {
-                Cursor.Position = new Point(Painter.minX, Painter.minY);
-                Thread.Sleep(100);
-                thread = new Thread(new ThreadStart(MyThread));
-                thread.Start();
-            }
-            if (e.Key == Keys.NumPad4)
-            {
-                thread.Abort();
-                Painter.n = Painter.n + 1;
-                Thread.Sleep(100);
-                Cursor.Position = new Point(Painter.minX, Painter.minY);
-                Thread.Sleep(100);
-                thread = new Thread(new ThreadStart(MyThread));
-                thread.Start();
+                case Keys.NumPad1:
+                    if (!afterGuide) return;
+                    TakeScreenShot();
+                    Painter.n = Painter.minColors;
+                    GetMouse();
+                    Painter.minX = MousePosition.X;
+                    Painter.minY = MousePosition.Y;
+                    Painter.maxX = MousePosition.X + (Painter.spaces * Painter.gridX);
+                    Painter.maxY = MousePosition.Y + (Painter.spaces * Painter.gridY);
+                    thread = new Thread(new ThreadStart(painter.Paint));
+                    thread.Start();
+                    break;
+
+                case Keys.NumPad2:
+                    thread.Abort();
+                    break;
+                    
+                case Keys.NumPad3:
+                    Cursor.Position = new Point((int)Painter.minX, (int)Painter.minY);
+                    Thread.Sleep(100);
+                    thread = new Thread(new ThreadStart(painter.Paint));
+                    thread.Start();
+                    break;
+
+                case Keys.NumPad4:
+                    thread.Abort();
+                    Painter.n = Painter.n + 1;
+                    Thread.Sleep(100);
+                    Cursor.Position = new Point((int)Painter.minX, (int)Painter.minY);
+                    Thread.Sleep(100);
+                    thread = new Thread(new ThreadStart(painter.Paint));
+                    thread.Start();
+                    break;
+
+                case Keys.NumPad5:
+                    StartGuide();
+                    break;
             }
 
         }
 
-        public static void getMouse(Form form)
+        private void StartGuide()
         {
-            form.Invoke(new EventHandler(delegate {
-                lab1.Text = MousePosition.X + " " + MousePosition.Y;
-                Color clr = Painter.bmp.GetPixel(MousePosition.X, MousePosition.Y);
-                lab2.Text = clr.R + "," + clr.G + "," + clr.B;
-                Bitmap col = new Bitmap(100, 100);
-                Graphics g = Graphics.FromImage(col);
-                g.Clear(Color.FromArgb(clr.R, clr.G, clr.B));
-                pics2.Image = col;
-            }));
+            switch (guideStep)
+            {
+                case 0:
+                    TakeScreenShot();
+                    afterGuide = false;
+                    InvokeGuideLabel("Move your mouse to top left corner of the picture to select first corner.\nPress Alt + Numpad5 when ready.");
+                    break;
+                case 1:
+                    guide = new Guide(this);
+                    guide.Start();
+                    InvokeGuideLabel("Move your mouse to bottom right corner of the picture to select second corner. You should see a helper rectangle on the right.\nPress Alt + Numpad5 when ready.");
+                    break;
+                case 2:
+                    guide.second = false;
+                    InvokeGuideLabel("Adjust grid size. You should see a helper rectangle on the right.\nPress Alt + Numpad5 when ready.");
+                    break;
+                case 3:
+                    guide.UpdatePainter();
+                    afterGuide = true;
+                    guide.Abort();
+                    InvokeGuideLabel("Now you can press Alt + Numpad1 to start.");
+                    guideStep = -1;
+                    break;
+            }
+            guideStep++;
+        }
+
+        public Point GetMouse()
+        {
+            return new Point(MousePosition.X, MousePosition.Y);
+        }
+        
+        public void TakeScreenShot()
+        {
             
-
-            Painter.mouseX = MousePosition.X;
-            Painter.mouseY = MousePosition.Y;
+            Image img = Screener.GetScreen();
+            Painter.bmp = new Bitmap(img);
+            InvokeImage(img);
         }
 
-        public static void takeScreenShot(PictureBox pic)
+        public static void InvokeImage(Image image)
         {
-
-            Image img = Screener.getScreen();
-            Painter.bmp = new Bitmap(img);
-            pic.Invoke(new EventHandler(delegate
+            stPic.Invoke(new EventHandler(delegate
             {
-                pic.Image = img;
+                stPic.Image = image;
+            }));
+        }
+
+        public static void InvokeGuideLabel(string text)
+        {
+            stGuideLabel.Invoke(new EventHandler(delegate
+            {
+                stGuideLabel.Text = text;
             }));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void numericX_ValueChanged(object sender, EventArgs e)
@@ -140,5 +176,12 @@ namespace ColoringPixelsFlood
             Painter.minColors = (int)numericMinColors.Value;
             Painter.n = Painter.minColors;
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (thread != null) thread.Abort();
+            if (thread != null) guide.Abort();
+        }
+
     }
 }

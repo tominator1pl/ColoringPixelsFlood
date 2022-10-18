@@ -30,64 +30,38 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.numericX = new System.Windows.Forms.NumericUpDown();
             this.numericY = new System.Windows.Forms.NumericUpDown();
             this.numericColors = new System.Windows.Forms.NumericUpDown();
             this.numericMinColors = new System.Windows.Forms.NumericUpDown();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.guideLabel = new System.Windows.Forms.Label();
+            this.turboCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericColors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMinColors)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(414, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(778, 595);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "label2";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(16, 47);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(100, 17);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
             // 
             // label3
             // 
@@ -127,57 +101,45 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(16, 263);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(371, 143);
+            this.label7.Size = new System.Drawing.Size(371, 130);
             this.label7.TabIndex = 12;
             this.label7.Text = resources.GetString("label7.Text");
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::ColoringPixelsFlood.Properties.Resources.Capture;
-            this.pictureBox3.Location = new System.Drawing.Point(329, 378);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(69, 63);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox3.TabIndex = 13;
-            this.pictureBox3.TabStop = false;
-            // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(16, 480);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(206, 78);
+            this.label8.Size = new System.Drawing.Size(206, 91);
             this.label8.TabIndex = 14;
             this.label8.Text = "Alt + Numpad 1 - Start\r\nAlt + Numpad 2 - Pause\r\nAlt + Numpad 3 - Resume\r\nAlt + Nu" +
-    "mpad 4 - Skip a color\r\n\r\nMake sure that Coloring pixels are in focus";
+    "mpad 4 - Skip a color\r\nAlt + Numpad 5 - Wizard\r\n\r\nMake sure that Coloring pixels" +
+    " are in focus";
             // 
             // numericX
             // 
             this.numericX.AllowDrop = true;
             this.numericX.Location = new System.Drawing.Point(16, 87);
-            this.numericX.Minimum = new decimal(new int[] {
-            1,
+            this.numericX.Maximum = new decimal(new int[] {
+            10000,
             0,
             0,
             0});
             this.numericX.Name = "numericX";
             this.numericX.Size = new System.Drawing.Size(120, 20);
             this.numericX.TabIndex = 15;
-            this.numericX.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericX.ValueChanged += new System.EventHandler(this.numericX_ValueChanged);
             // 
             // numericY
             // 
             this.numericY.Location = new System.Drawing.Point(16, 126);
             this.numericY.Maximum = new decimal(new int[] {
-            50,
+            10000,
             0,
             0,
             0});
@@ -242,36 +204,64 @@
             0});
             this.numericMinColors.ValueChanged += new System.EventHandler(this.numericMinColors_ValueChanged);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.guideLabel);
+            this.panel1.Location = new System.Drawing.Point(13, 13);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(395, 55);
+            this.panel1.TabIndex = 19;
+            // 
+            // guideLabel
+            // 
+            this.guideLabel.AutoSize = true;
+            this.guideLabel.Location = new System.Drawing.Point(0, 0);
+            this.guideLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.guideLabel.MaximumSize = new System.Drawing.Size(395, 0);
+            this.guideLabel.Name = "guideLabel";
+            this.guideLabel.Size = new System.Drawing.Size(157, 13);
+            this.guideLabel.TabIndex = 0;
+            this.guideLabel.Text = "Press Alt + Numpad5 for Wizard";
+            // 
+            // turboCheckBox
+            // 
+            this.turboCheckBox.AutoSize = true;
+            this.turboCheckBox.Location = new System.Drawing.Point(143, 75);
+            this.turboCheckBox.Name = "turboCheckBox";
+            this.turboCheckBox.Size = new System.Drawing.Size(111, 17);
+            this.turboCheckBox.TabIndex = 20;
+            this.turboCheckBox.Text = "Turbo (VSync Off)";
+            this.turboCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 619);
+            this.Controls.Add(this.turboCheckBox);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.numericMinColors);
             this.Controls.Add(this.numericColors);
             this.Controls.Add(this.numericY);
             this.Controls.Add(this.numericX);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Coloring Pixels Bot";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericColors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMinColors)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -280,20 +270,19 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericY;
         private System.Windows.Forms.NumericUpDown numericColors;
         private System.Windows.Forms.NumericUpDown numericMinColors;
         private System.Windows.Forms.NumericUpDown numericX;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label guideLabel;
+        private System.Windows.Forms.CheckBox turboCheckBox;
     }
 }
 
