@@ -1,5 +1,6 @@
 # ColoringPixelsFlood
 Program that automaticly colors a picture in Coloring Pixels Game
+<br />Requires .NET Framework 4.6.1 or later
 
 It's really finicky and only works in fullscreen 1920x1080.
 Max supported X and Y is 100x50 picture resolution.
