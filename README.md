@@ -3,8 +3,7 @@ Program that automaticly colors a picture in Coloring Pixels Game
 <br />Requires .NET Framework 4.6.1 or later
 
 Use the new Wizard. Alt + Numpad5
-Be sure to set Lock Completed Pixels and 
-Remove completed colors from palette in the game settings
+<br />Be sure to set Lock Completed Pixels and Remove completed colors from palette in the game settings
 
 You can also try Turbo mode (requires switching VSync Off)
 
