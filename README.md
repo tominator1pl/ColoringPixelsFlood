@@ -43,5 +43,5 @@ This program also features a Automatic Detection of an Image.
 4. Press Alt + Numpad 1
 5. If you can see that the bot works too fast and it skips pixels turn on "Skip square check"
 
-With enough zoom out you can sometimes see that the bot skips entires lines of pixels. That happens because of floating point values are converted to integer and some data is lost. In tis case some lines will be 2 on screen pixels and some 1 on screen pixel wide. With te conversion it can sometimes skip the 1 pixel wide lines. To prevent it zoom out enough so ypu can see solid black and white image without any noise (see Picture below), this meant that every line is now 1 pixel wide and the problem shouldn't happen.
-![Solid black and white picture](3rd.png "3rd Birthday")
+With enough zoom out you can sometimes see that the bot skips entires lines of pixels. That happens because of floating point values are converted to integer and some data is lost. In this case some lines will be 2 on screen pixels and some 1 on screen pixel wide. With the conversion it can sometimes skip the 1 pixel wide lines. To prevent it zoom out enough so you can see solid black and white image without any noise (see Picture below), that way every line is now 1 pixel wide and the problem shouldn't happen.
+<br />![Solid black and white picture](3rd.PNG "3rd Birthday")
