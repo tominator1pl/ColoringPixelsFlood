@@ -74,7 +74,7 @@ namespace ColoringPixelsFlood
                 }
                 Thread.Sleep(100);
                 form1.TakeScreenShot();
-                if (bmp.GetPixel(1900, 920) == Color.FromArgb(255, 117, 118)) continue; 
+                if (bmp.GetPixel(1900, 920) == Color.FromArgb(255, 117, 118)) continue;
                 //Thread.Sleep(200);
                 form1.TakeScreenShot();
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
@@ -143,6 +143,7 @@ namespace ColoringPixelsFlood
         
         private bool CheckFull(float posX, float posY)
         {
+            if (Form1.bIgnoreCheckBox) return false;
             posX = (posX - spaces / 2) + 1;
             posY = (posY - spaces / 2) + 1;
             float diag = spaces - 2;
@@ -186,7 +187,7 @@ namespace ColoringPixelsFlood
                 slowTicks = slowSpeed;
             }
 
-            if (Form1.stTurboCheckBox.Checked)
+            if (Form1.bTurboCheckBox)
             {
                 Thread.SpinWait(turboTicks);
             }

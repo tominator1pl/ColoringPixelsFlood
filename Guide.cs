@@ -15,11 +15,21 @@ namespace ColoringPixelsFlood
         private Point oldMousePos;
         private SizeF cellSize;
         private Point curMousePos;
+        private Image clearImage;
         public bool second = true;
 
         public Guide(Form1 form)
         {
             Guide.form = form;
+            thread = new Thread(new ThreadStart(ThreadStart));
+        }
+
+        public Guide(Form1 form, Point firstPos, Point secondPos)
+        {
+            Guide.form = form;
+            oldMousePos = firstPos;
+            curMousePos = secondPos;
+            second = false;
             thread = new Thread(new ThreadStart(ThreadStart));
         }
 
@@ -31,6 +41,7 @@ namespace ColoringPixelsFlood
         public void Abort()
         {
             thread.Abort();
+            clearImage.Dispose();
         }
         
         public void UpdatePainter()
@@ -44,9 +55,9 @@ namespace ColoringPixelsFlood
 
         private void ThreadStart()
         {
-            oldMousePos = form.GetMouse();
+            if(second) oldMousePos = form.GetMouse();
             Pen pen = new Pen(Color.LimeGreen, 1f);
-            Image clearImage = (Image)form.pics.Image.Clone();
+            clearImage = (Image)form.pics.Image.Clone();
             while (true)
             {
                 if(second) curMousePos = form.GetMouse();
@@ -59,15 +70,22 @@ namespace ColoringPixelsFlood
                     g.DrawRectangle(pen, rect);
                     for(int i = 0; i < Painter.gridX; i++)
                     {
-                        g.DrawLine(pen, oldMousePos.X + i * cellSize.Width, oldMousePos.Y, oldMousePos.X + i * cellSize.Width, curMousePos.Y);
+                        PointF first = new PointF(oldMousePos.X + i * cellSize.Width, oldMousePos.Y);
+                        PointF second = new PointF(oldMousePos.X + i * cellSize.Width, curMousePos.Y);
+                        if(first != second)
+                            g.DrawLine(pen, first, second);
                     }
                     for (int i = 0; i < Painter.gridY; i++)
                     {
-                        g.DrawLine(pen, oldMousePos.X, oldMousePos.Y + i * cellSize.Height, curMousePos.X, oldMousePos.Y + i * cellSize.Height);
+                        PointF first = new PointF(oldMousePos.X, oldMousePos.Y + i * cellSize.Height);
+                        PointF second = new PointF(curMousePos.X, oldMousePos.Y + i * cellSize.Height);
+                        if (first != second)
+                            g.DrawLine(pen, first, second);
                     }
                 }
                 Form1.InvokeImage(bitmap);
-                Thread.Sleep(10);
+                Thread.Sleep(20);
+                
             }
         }
 

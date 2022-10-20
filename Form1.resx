@@ -118,15 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label7.Text" xml:space="preserve">
-    <value>Use the new Wizard. Alt + Numpad5
+    <value>Use the new Auto-Detection. Alt + Numpad 6
 Be sure to set Lock Completed Pixels and 
 Remove completed colors from palette in the game settings
 
 You can also try Turbo mode (requires switching VSync Off)
 
 1. Select a picture type in X, Y, num of colors and color to start with (usualy 1)
-2. Scroll away so you can see at least a black dot in each square
-3. Use the wizard Alt + Numpad5 on top of the window
-5. Hit Alt + Numpad 1</value>
+2. Scroll away so you can see the whole image
+3. Use the Auto-detection Alt + Numpad 6
+4. Continue with instruction on top of the window
+5. Hit Alt + Numpad 1
+6. If you can see that the bot works too fast
+and it skips pixels turn on "Skip square check"</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Alt + Numpad 1 - Start
+Alt + Numpad 2 - Pause
+Alt + Numpad 3 - Resume
+Alt + Numpad 4 - Skip a color
+Alt + Numpad 5 - Wizard
+Alt + Numpad 6 - Auto Image Detection
+
+Make sure that Coloring pixels are in focus</value>
+  </data>
+  <data name="skipSquareCheckLabel.Text" xml:space="preserve">
+    <value>Skips checking the squares if they are full. Makes the bot try fill every square no matter if it's already colored.
+Works better with big images, but slower since zooming out makes numbers on pixels undetectable, so this forces the bot to color it anyway.</value>
   </data>
 </root>

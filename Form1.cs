@@ -19,19 +19,22 @@ namespace ColoringPixelsFlood
         public PictureBox pics;
         public static PictureBox stPic;
         public static Label stGuideLabel;
-        public static CheckBox stTurboCheckBox;
+        public static bool bTurboCheckBox;
+        public static bool bIgnoreCheckBox;
         public bool afterGuide;
         private int guideStep;
         Thread thread;
         Painter painter;
         Guide guide;
+        Finder finder;
 
         public Form1()
         {
             InitializeComponent();
             lab1 = guideLabel;
             stGuideLabel = guideLabel;
-            stTurboCheckBox = turboCheckBox;
+            bTurboCheckBox = false;
+            bIgnoreCheckBox = false;
             pics = pictureBox1;
             stPic = pictureBox1;
             painter = new Painter(this);
@@ -43,6 +46,7 @@ namespace ColoringPixelsFlood
             HotKeyManager.RegisterHotKey(Keys.NumPad3, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad4, KeyModifiers.Alt);
             HotKeyManager.RegisterHotKey(Keys.NumPad5, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(Keys.NumPad6, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
 
 
@@ -56,11 +60,11 @@ namespace ColoringPixelsFlood
                     if (!afterGuide) return;
                     TakeScreenShot();
                     Painter.n = Painter.minColors;
-                    GetMouse();
-                    Painter.minX = MousePosition.X;
+                    //GetMouse();
+                    /*Painter.minX = MousePosition.X;
                     Painter.minY = MousePosition.Y;
                     Painter.maxX = MousePosition.X + (Painter.spaces * Painter.gridX);
-                    Painter.maxY = MousePosition.Y + (Painter.spaces * Painter.gridY);
+                    Painter.maxY = MousePosition.Y + (Painter.spaces * Painter.gridY);*/
                     thread = new Thread(new ThreadStart(painter.Paint));
                     thread.Start();
                     break;
@@ -88,6 +92,11 @@ namespace ColoringPixelsFlood
 
                 case Keys.NumPad5:
                     StartGuide();
+                    break;
+
+                case Keys.NumPad6:
+                    InvokeGuideLabel("Detecting the Image...");
+                    StartFinder();
                     break;
             }
 
@@ -122,6 +131,23 @@ namespace ColoringPixelsFlood
             guideStep++;
         }
 
+        private void StartFinder()
+        {
+            TakeScreenShot();
+            finder = new Finder(this);
+            finder.Start();
+        }
+
+        public void GuideFromFinder(Point topLeft, Point bottomRight)
+        {
+            afterGuide = false;
+            guide = new Guide(this, topLeft, bottomRight);
+            guide.Start();
+            guideStep = 2;
+            StartGuide();
+            finder.Abort();
+        }
+
         public Point GetMouse()
         {
             return new Point(MousePosition.X, MousePosition.Y);
@@ -129,7 +155,7 @@ namespace ColoringPixelsFlood
         
         public void TakeScreenShot()
         {
-            
+            if(Painter.bmp != null) Painter.bmp.Dispose();
             Image img = Screener.GetScreen();
             Painter.bmp = new Bitmap(img);
             InvokeImage(img);
@@ -139,6 +165,7 @@ namespace ColoringPixelsFlood
         {
             stPic.Invoke(new EventHandler(delegate
             {
+                if (stPic.Image != null) stPic.Image.Dispose();
                 stPic.Image = image;
             }));
         }
@@ -183,5 +210,14 @@ namespace ColoringPixelsFlood
             if (thread != null) guide.Abort();
         }
 
+        private void turboCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            bTurboCheckBox = turboCheckBox.Checked;
+        }
+
+        private void ignoreCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            bIgnoreCheckBox = ignoreCheckBox.Checked;
+        }
     }
 }

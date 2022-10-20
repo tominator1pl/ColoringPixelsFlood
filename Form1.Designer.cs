@@ -43,6 +43,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.guideLabel = new System.Windows.Forms.Label();
             this.turboCheckBox = new System.Windows.Forms.CheckBox();
+            this.ignoreCheckBox = new System.Windows.Forms.CheckBox();
+            this.skipSquareCheckLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericY)).BeginInit();
@@ -105,7 +107,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(16, 263);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(371, 130);
+            this.label7.Size = new System.Drawing.Size(371, 169);
             this.label7.TabIndex = 12;
             this.label7.Text = resources.GetString("label7.Text");
             // 
@@ -115,11 +117,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(16, 480);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(206, 91);
+            this.label8.Size = new System.Drawing.Size(206, 104);
             this.label8.TabIndex = 14;
-            this.label8.Text = "Alt + Numpad 1 - Start\r\nAlt + Numpad 2 - Pause\r\nAlt + Numpad 3 - Resume\r\nAlt + Nu" +
-    "mpad 4 - Skip a color\r\nAlt + Numpad 5 - Wizard\r\n\r\nMake sure that Coloring pixels" +
-    " are in focus";
+            this.label8.Text = resources.GetString("label8.Text");
             // 
             // numericX
             // 
@@ -133,6 +133,11 @@
             this.numericX.Name = "numericX";
             this.numericX.Size = new System.Drawing.Size(120, 20);
             this.numericX.TabIndex = 15;
+            this.numericX.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericX.ValueChanged += new System.EventHandler(this.numericX_ValueChanged);
             // 
             // numericY
@@ -232,12 +237,36 @@
             this.turboCheckBox.TabIndex = 20;
             this.turboCheckBox.Text = "Turbo (VSync Off)";
             this.turboCheckBox.UseVisualStyleBackColor = true;
+            this.turboCheckBox.CheckedChanged += new System.EventHandler(this.turboCheckBox_CheckedChanged);
+            // 
+            // ignoreCheckBox
+            // 
+            this.ignoreCheckBox.AutoSize = true;
+            this.ignoreCheckBox.Location = new System.Drawing.Point(143, 98);
+            this.ignoreCheckBox.Name = "ignoreCheckBox";
+            this.ignoreCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.ignoreCheckBox.TabIndex = 21;
+            this.ignoreCheckBox.Text = "Skip square check";
+            this.ignoreCheckBox.UseVisualStyleBackColor = true;
+            this.ignoreCheckBox.CheckedChanged += new System.EventHandler(this.ignoreCheckBox_CheckedChanged);
+            // 
+            // skipSquareCheckLabel
+            // 
+            this.skipSquareCheckLabel.AutoSize = true;
+            this.skipSquareCheckLabel.Location = new System.Drawing.Point(142, 118);
+            this.skipSquareCheckLabel.MaximumSize = new System.Drawing.Size(250, 0);
+            this.skipSquareCheckLabel.Name = "skipSquareCheckLabel";
+            this.skipSquareCheckLabel.Size = new System.Drawing.Size(244, 91);
+            this.skipSquareCheckLabel.TabIndex = 22;
+            this.skipSquareCheckLabel.Text = resources.GetString("skipSquareCheckLabel.Text");
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1204, 619);
+            this.Controls.Add(this.skipSquareCheckLabel);
+            this.Controls.Add(this.ignoreCheckBox);
             this.Controls.Add(this.turboCheckBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.numericMinColors);
@@ -283,6 +312,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label guideLabel;
         private System.Windows.Forms.CheckBox turboCheckBox;
+        private System.Windows.Forms.CheckBox ignoreCheckBox;
+        private System.Windows.Forms.Label skipSquareCheckLabel;
     }
 }
 
